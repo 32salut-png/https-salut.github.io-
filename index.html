@@ -1,32 +1,104 @@
-<video
-  class="bg"
-  autoplay
-  muted
-  loop
-  playsinline
-  webkit-playsinline
-  preload="auto"
-  disablepictureinpicture
->
-  <source src="background.mp4">
-</video>
-
-<script>
-  const v = document.querySelector('.bg');
-
-  async function tryPlay() {
-    try {
-      await v.play();
-    } catch (e) {
-      console.log('autoplay blocked', e);
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>My Start Page</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     }
-  }
 
-  window.addEventListener('load', tryPlay);
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) tryPlay();
-  });
+    .bg {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 0;
+      background: #000;
+    }
 
-  document.addEventListener('touchstart', tryPlay, { once: true });
-  document.addEventListener('click', tryPlay, { once: true });
-</script>
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 24px;
+      box-sizing: border-box;
+      background: linear-gradient(to top, rgba(0,0,0,.18), rgba(0,0,0,0));
+      pointer-events: none;
+    }
+
+    .links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      pointer-events: auto;
+      margin-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+
+    .links a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.18);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <video
+    class="bg"
+    autoplay
+    muted
+    loop
+    playsinline
+    webkit-playsinline
+    preload="auto"
+    disablepictureinpicture
+  >
+    <source src="background.mp4">
+  </video>
+
+  <div class="overlay">
+    <div class="links">
+      <a href="https://www.google.com">Google</a>
+      <a href="https://www.youtube.com">YouTube</a>
+      <a href="https://chatgpt.com">ChatGPT</a>
+    </div>
+  </div>
+
+  <script>
+    const v = document.querySelector('.bg');
+
+    async function tryPlay() {
+      try {
+        await v.play();
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    window.addEventListener('load', tryPlay);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) tryPlay();
+    });
+    document.addEventListener('touchstart', tryPlay, { once: true });
+    document.addEventListener('click', tryPlay, { once: true });
+  </script>
+
+</body>
+</html>
